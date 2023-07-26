@@ -1,6 +1,8 @@
+import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:weather_app/Models/worker.dart';
 
@@ -12,6 +14,7 @@ class Loading extends StatefulWidget {
 }
 
 class LoadingState extends State<Loading> {
+  
   String city = "Patna";
   String temp = '';
   String hum = '';
@@ -45,11 +48,6 @@ class LoadingState extends State<Loading> {
         "city_value": city,
       });
     });
-  }
-
-  @override
-  void initState() {
-    super.initState();
   }
 
   @override

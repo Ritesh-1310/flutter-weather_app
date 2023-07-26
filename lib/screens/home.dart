@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:weather_icons/weather_icons.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -10,6 +11,22 @@ class Home extends StatefulWidget {
 
 class HomeState extends State<Home> {
   TextEditingController searchController = TextEditingController();
+  //// connectivity ////
+  var _connectivityResult;
+
+  Future<void> checkConnectivity() async {
+    final connectivityResult = await Connectivity().checkConnectivity();
+    setState(() {
+      _connectivityResult = connectivityResult;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    checkConnectivity();
+  }
+  ////////////////////////////////////
 
   void search() {
     // Implement your search logic here
@@ -19,11 +36,6 @@ class HomeState extends State<Home> {
       Navigator.pushReplacementNamed(context, "/loading",
           arguments: {"searchText": searchController.text});
     }
-  }
-
-  @override
-  void initState() {
-    super.initState();
   }
 
   @override
@@ -65,7 +77,9 @@ class HomeState extends State<Home> {
       resizeToAvoidBottomInset: false,
       body: SingleChildScrollView(
         child: SafeArea(
-          child: Container(
+          child: _connectivityResult == ConnectivityResult.none
+              ? Image.asset('assets/images/no_internet.jpg', height: MediaQuery.of(context).size.height, width: MediaQuery.of(context).size.height,)
+              : Container(
             height: screenHeight,
             decoration: BoxDecoration(
                 gradient: LinearGradient(
